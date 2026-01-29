@@ -1,3 +1,7 @@
+/**
+ * Represents a generic task.
+ * Serves as the base class for Todo, Deadline, and Event.
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
