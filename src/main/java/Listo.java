@@ -1,70 +1,54 @@
-import java.util.Scanner;
-
+/**
+ * The Listo class is a simple chatbot that helps users manage tasks.
+ * It supports adding Todo, Deadline, and Event tasks, as well as marking them as done/undone.
+ */
 public class Listo {
+
+    /**
+     * The entry point of the application.
+     * Continuously reads user commands and delegates execution to the Parser
+     * until the "bye" command is received.
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
-        String greeting = "Hello! I'm Listo :)\nHow can I help you?";
-        String goodbye = "Bye. Hope to see you again soon!";
+        Ui ui = new Ui();
+        TaskList tasks = new TaskList();
 
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ui.showWelcome();
 
-        System.out.println(greeting);
-
-        Scanner scanner = new Scanner(System.in);
         while (true) {
-            String input = scanner.nextLine();
+            String input = ui.readCommand();
 
-            if (input.equals("bye")) { // exit using bye command
-                break;
-            } else if (input.equals("list")) { // show all the tasks using list command
-                System.out.println("Things to do:");
-                for (int i = 0; i < taskCount; i++) {
-                    System.out.println((i + 1) + "." + tasks[i].toString());
+            try {
+                if (input.equals("bye")) { // Exit using "bye" command
+                    break;
+
+                } else if (input.equals("list")) { // Show all tasks using "list" command
+                    ui.showList(tasks);
+
+                } else if (input.startsWith("mark")) { // Mark a task as done using "mark" command
+                    Parser.handleMark(input, tasks, ui);
+
+                } else if (input.startsWith("unmark")) { // Mark a task as undone using "unmark" command
+                    Parser.handleUnmark(input, tasks, ui);
+
+                } else if (input.startsWith("todo")) { // Add a new Todo task using "todo" command
+                    Parser.addTodo(input, tasks, ui);
+
+                } else if (input.startsWith("deadline")) { // Add a new task with deadline using "deadline" command
+                    Parser.addDeadline(input, tasks, ui);
+
+                } else if (input.startsWith("event")) { // Add a new task with start and end date/time using "event" command
+                    Parser.addEvent(input, tasks, ui);
+
+                } else {
+                    throw new ListoException("OOPS!!! Sorry, I don't know what you mean :(");
                 }
-            } else if (input.startsWith("mark ")) { // mark a task as done using mark command
-                int index = Integer.parseInt(input.split(" ")[1]) - 1;
-                tasks[index].markAsDone();
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println("  " + tasks[index].toString());
-            } else if (input.startsWith("unmark ")) { // mark a task as undone using unmark command
-                int index = Integer.parseInt(input.split(" ")[1]) - 1;
-                tasks[index].markAsNotDone();
-                System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println("  " + tasks[index].toString());
-            } else if (input.startsWith("todo ")) { // add a new to do task using todo command
-                String description = input.substring(5);
-                tasks[taskCount] = new Todo(description);
-                taskCount++;
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[taskCount - 1].toString());
-                System.out.println("Now you have " + taskCount + " tasks in the list.");
-            } else if (input.startsWith("deadline ")) { // add a new task with deadline using deadline command
-                String[] parts = input.substring(9).split(" /by ");
-                String description = parts[0];
-                String by = parts[1];
-
-                tasks[taskCount] = new Deadline(description, by);
-                taskCount++;
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[taskCount - 1].toString());
-                System.out.println("Now you have " + taskCount + " tasks in the list.");
-            } else if (input.startsWith("event ")) { // add a new task with start and end date/time using event command
-                String[] parts = input.substring(6).split(" /from ");
-                String description = parts[0];
-                String[] timeParts = parts[1].split(" /to ");
-                String from = timeParts[0];
-                String to = timeParts[1];
-
-                tasks[taskCount] = new Event(description, from, to);
-                taskCount++;
-                System.out.println("Got it. I've added this task:");
-                System.out.println("  " + tasks[taskCount - 1].toString());
-                System.out.println("Now you have " + taskCount + " tasks in the list.");
-            } else {
-                System.out.println("OOPS! Sorry, I don't know what you mean :(");
+            } catch (ListoException e) {
+                ui.showError(e.getMessage());
             }
         }
-
-        System.out.println(goodbye);
+        ui.showGoodbye();
     }
 }
