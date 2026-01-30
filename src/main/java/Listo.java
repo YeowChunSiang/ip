@@ -33,6 +33,9 @@ public class Listo {
                 } else if (input.startsWith("unmark")) { // Mark a task as undone using "unmark" command
                     Parser.handleUnmark(input, tasks, ui);
 
+                } else if (input.startsWith("delete")) { // Delete a task using "delete" command
+                    Parser.handleDelete(input, tasks, ui);
+
                 } else if (input.startsWith("todo")) { // Add a new Todo task using "todo" command
                     Parser.addTodo(input, tasks, ui);
 

@@ -55,6 +55,33 @@ public class Parser {
     }
 
     /**
+     * Parses the "delete" command and removes the specified task.
+     * Checks if the task index exists and delegates the removal to TaskList and UI.
+     *
+     * @param input The full user input string (e.g., "delete 1").
+     * @param tasks The current list of tasks.
+     * @param ui    The UI instance to display confirmation messages.
+     * @throws ListoException If the input format is invalid or the task number does not exist.
+     */
+    public static void handleDelete(String input, TaskList tasks, Ui ui) throws ListoException {
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            throw new ListoException("OOPS!!! Which task number do you want me to delete?\nEg. delete 1");
+        }
+        try {
+            int index = Integer.parseInt(parts[1]) - 1;
+            if (index < 0 || index >= tasks.getSize()) {
+                throw new ListoException("OOPS!!! I can't find that task number, can you try again?");
+            }
+            Task t = tasks.getTask(index);
+            tasks.deleteTask(index);
+            ui.showTaskDeleted(t, tasks.getSize());
+        } catch (NumberFormatException e) {
+            throw new ListoException("OOPS!!! Please enter a valid number.\nEg. delete 1");
+        }
+    }
+
+    /**
      * Parses the "todo" command and adds a new Todo task.
      *
      * @param input The full user input string (e.g., "todo read book").
