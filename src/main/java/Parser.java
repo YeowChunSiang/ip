@@ -5,6 +5,64 @@
 public class Parser {
 
     /**
+     * Parses the user input and executes the corresponding command.
+     * Maps the input string to a CommandType enum and executes the relevant logic.
+     *
+     * @param input The full user input string.
+     * @param tasks The current list of tasks.
+     * @param ui    The UI instance to display messages.
+     * @throws ListoException If the command is invalid or execution fails.
+     */
+    public static void parseCommand(String input, TaskList tasks, Ui ui) throws ListoException {
+        String[] parts = input.split(" ");
+        String commandWord = parts[0];
+        CommandType command = getCommandType(commandWord);
+
+        switch (command) {
+            case LIST:
+                ui.showList(tasks);
+                break;
+            case MARK:
+                handleMark(input, tasks, ui);
+                break;
+            case UNMARK:
+                handleUnmark(input, tasks, ui);
+                break;
+            case DELETE:
+                handleDelete(input, tasks, ui);
+                break;
+            case TODO:
+                addTodo(input, tasks, ui);
+                break;
+            case DEADLINE:
+                addDeadline(input, tasks, ui);
+                break;
+            case EVENT:
+                addEvent(input, tasks, ui);
+                break;
+            case BYE:
+                // The 'bye' command is checked in the main loop to break execution,
+                break;
+            default:
+                throw new ListoException("OOPS!!! Sorry, I don't know what you mean :(");
+        }
+    }
+
+    /**
+     * Converts a string command word into a CommandType enum.
+     *
+     * @param commandWord The first word of the user input.
+     * @return The corresponding CommandType, or UNKNOWN if not recognized.
+     */
+    private static CommandType getCommandType(String commandWord) {
+        try {
+            return CommandType.valueOf(commandWord.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return CommandType.UNKNOWN;
+        }
+    }
+
+    /**
      * Parses the "mark" command to mark a task as done.
      *
      * @param input The full user input string (e.g., "mark 1").

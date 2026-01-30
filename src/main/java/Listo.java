@@ -20,34 +20,12 @@ public class Listo {
         while (true) {
             String input = ui.readCommand();
 
+            if (input.equals("bye")) {
+                break;
+            }
+
             try {
-                if (input.equals("bye")) { // Exit using "bye" command
-                    break;
-
-                } else if (input.equals("list")) { // Show all tasks using "list" command
-                    ui.showList(tasks);
-
-                } else if (input.startsWith("mark")) { // Mark a task as done using "mark" command
-                    Parser.handleMark(input, tasks, ui);
-
-                } else if (input.startsWith("unmark")) { // Mark a task as undone using "unmark" command
-                    Parser.handleUnmark(input, tasks, ui);
-
-                } else if (input.startsWith("delete")) { // Delete a task using "delete" command
-                    Parser.handleDelete(input, tasks, ui);
-
-                } else if (input.startsWith("todo")) { // Add a new Todo task using "todo" command
-                    Parser.addTodo(input, tasks, ui);
-
-                } else if (input.startsWith("deadline")) { // Add a new task with deadline using "deadline" command
-                    Parser.addDeadline(input, tasks, ui);
-
-                } else if (input.startsWith("event")) { // Add a new task with start and end date/time using "event" command
-                    Parser.addEvent(input, tasks, ui);
-
-                } else {
-                    throw new ListoException("OOPS!!! Sorry, I don't know what you mean :(");
-                }
+                Parser.parseCommand(input, tasks, ui);
             } catch (ListoException e) {
                 ui.showError(e.getMessage());
             }
