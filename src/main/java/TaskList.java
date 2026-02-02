@@ -20,18 +20,26 @@ public class TaskList {
     }
 
     public Task getTask(int index) {
+
         return tasks.get(index);
     }
 
     public int getSize() {
+
         return tasks.size();
     }
 
     public void markDone(int index) {
+
         tasks.get(index).markAsDone();
     }
 
     public void markNotDone(int index) {
+
         tasks.get(index).markAsNotDone();
+    }
+
+    public TaskList(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 }
