@@ -31,14 +31,14 @@ public class Ui {
      * Prints the welcome greeting message.
      */
     public void showWelcome() {
-        System.out.println("Hello! I'm listo.Listo :)\nHow can I help you?");
+        System.out.println("Hello! I'm Listo :)\nHow can I help you?");
     }
 
     /**
      * Prints the goodbye message.
      */
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+        System.out.println("Bye Bye:) Hope to see you again soon!");
     }
 
     /**
