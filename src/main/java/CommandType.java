@@ -10,6 +10,7 @@ public enum CommandType {
     DEADLINE,
     EVENT,
     DELETE,
+    FILTER,
     BYE,
     UNKNOWN // Used for invalid commands
 }

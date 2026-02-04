@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.time.LocalDate;
 
 /**
  * Manages the list of tasks.
@@ -71,6 +72,22 @@ public class TaskList {
     public void markNotDone(int index) {
 
         tasks.get(index).markAsNotDone();
+    }
+
+    /**
+     * Finds all tasks that occur on a specific date.
+     *
+     * @param date The date to search for.
+     * @return An ArrayList of matching tasks.
+     */
+    public ArrayList<Task> getTasksOnDate(LocalDate date) {
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.isOn(date)) {
+                matchingTasks.add(t);
+            }
+        }
+        return matchingTasks;
     }
 
     /**

@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Handles all user interaction, including reading input and printing messages.
@@ -101,6 +102,23 @@ public class Ui {
             System.out.println("Things to do:");
             for (int i = 0; i < tasks.getSize(); i++) {
                 System.out.println((i + 1) + "." + tasks.getTask(i).toString());
+            }
+        }
+    }
+
+    /**
+     * Displays the list of tasks found for a specific date.
+     *
+     * @param tasks The list of matching tasks.
+     * @param dateInput The date string used for the search.
+     */
+    public void showTasksOnDate(ArrayList<Task> tasks, String dateInput) {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks found on " + dateInput);
+        } else {
+            System.out.println("Here are the tasks on " + dateInput + ":");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + "." + tasks.get(i).toString());
             }
         }
     }

@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -20,6 +21,18 @@ public class Deadline extends Task {
         // Define the format: 2/12/2019 1800 -> d/M/yyyy HHmm
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
         this.by = LocalDateTime.parse(by, formatter);
+    }
+
+    /**
+     * Checks if the deadline falls on the specified date.
+     *
+     * @param date The date to check against.
+     * @return true if the deadline date matches the given date.
+     */
+    @Override
+    public boolean isOn(LocalDate date) {
+        // Check if the date part of the deadline matches the search date
+        return this.by.toLocalDate().equals(date);
     }
 
     /**

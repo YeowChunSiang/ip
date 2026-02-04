@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 /**
  * Represents a generic task.
  * Serves as the base class for Todo, Deadline, and Event.
@@ -61,5 +63,16 @@ public class Task {
      */
     public String toFileFormat() {
         return (isDone ? "1" : "0") + " | " + description;
+    }
+
+    /**
+     * Checks if the task occurs on the specified date.
+     * Default implementation returns false.
+     *
+     * @param date The date to check against.
+     * @return true if the task occurs on the date, false otherwise.
+     */
+    public boolean isOn(LocalDate date) {
+        return false;
     }
 }

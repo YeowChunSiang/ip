@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 /**
@@ -41,6 +44,9 @@ public class Parser {
                 break;
             case EVENT:
                 addEvent(input, tasks, ui);
+                break;
+            case FILTER:
+                handleFilter(input, tasks, ui);
                 break;
             case BYE:
                 // The 'bye' command is checked in the main loop to break execution,
@@ -228,5 +234,31 @@ public class Parser {
         Task t = new Event(description, from, to);
         tasks.addTask(t);
         ui.showTaskAdded(t, tasks.getSize());
+    }
+
+    /**
+     * Parses the "filter" command to find tasks on a specific date.
+     * * @param input The full user input string (e.g., "filter 2/12/2019").
+     */
+    public static void handleFilter(String input, TaskList tasks, Ui ui) throws ListoException {
+        String[] parts = input.split(" ");
+        if (parts.length < 2) {
+            throw new ListoException("OOPS!!! Please specify a date to filter by.\nEg. filter 2/12/2019");
+        }
+
+        String dateString = parts[1];
+        try {
+            // Parse the date string into a LocalDate object
+            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("d/M/yyyy"));
+
+            // Get matching tasks
+            ArrayList<Task> matchingTasks = tasks.getTasksOnDate(date);
+
+            // Show results
+            ui.showTasksOnDate(matchingTasks, dateString);
+
+        } catch (java.time.format.DateTimeParseException e) {
+            throw new ListoException("OOPS!!! Invalid date format. Please use d/M/yyyy (e.g., 2/12/2019).");
+        }
     }
 }
