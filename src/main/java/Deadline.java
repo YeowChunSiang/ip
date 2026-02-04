@@ -1,29 +1,57 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Represents a Deadline task.
- * A task that needs to be done by a specific date/time.
+ * A task that needs to be done by a specific date and time.
  */
 public class Deadline extends Task {
 
-    protected String by;
+    protected LocalDateTime by;
 
     /**
      * Creates a new Deadline task.
      *
      * @param description The task description.
-     * @param by          The deadline date/time.
+     * @param by          The deadline date/time (must be in d/M/yyyy HHmm format).
      */
     public Deadline(String description, String by) {
         super(description);
-        this.by = by;
+        // Define the format: 2/12/2019 1800 -> d/M/yyyy HHmm
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+        this.by = LocalDateTime.parse(by, formatter);
     }
 
+    /**
+     * Checks if the deadline falls on the specified date.
+     *
+     * @param date The date to check against.
+     * @return true if the deadline date matches the given date.
+     */
     @Override
-    public String toString() {
-        return "[D]" + super.toString() + " (by: " + by + ")";
+    public boolean isOn(LocalDate date) {
+        // Check if the date part of the deadline matches the search date
+        return this.by.toLocalDate().equals(date);
     }
 
+    /**
+     * Returns the string format of the Deadline task for saving to a file.
+     * We save it in the same format (d/M/yyyy HHmm) so the constructor can load it back easily.
+     */
     @Override
     public String toFileFormat() {
-        return "D | " + super.toFileFormat() + " | " + by;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+        return "D | " + super.toFileFormat() + " | " + by.format(formatter);
+    }
+
+    /**
+     * Returns the string representation of the Deadline task.
+     * Displays the date in a nice format like "Dec 02 2019, 6:00 pm".
+     */
+    @Override
+    public String toString() {
+        // Output format: Dec 02 2019, 6:00 pm
+        return "[D]" + super.toString() + " (by: " + by.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a")) + ")";
     }
 }
