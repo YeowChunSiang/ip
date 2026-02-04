@@ -1,3 +1,5 @@
+import java.time.format.DateTimeParseException;
+
 /**
  * Handles the logic for parsing and executing user commands.
  * Contains static methods to process specific command types.
@@ -167,23 +169,28 @@ public class Parser {
      */
     public static void addDeadline(String input, TaskList tasks, Ui ui) throws ListoException {
         if (input.trim().equals("deadline")) {
-            throw new ListoException("OOPS!!! What is the name and due date for this task?\nEg. deadline Do Tutorial 1 /by Monday");
+            throw new ListoException("OOPS!!! What is the name and due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         if (!input.contains("/by")) {
-            throw new ListoException("OOPS!!! What is the due date for this task?\nEg. deadline Do Tutorial 1 /by Monday");
+            throw new ListoException("OOPS!!! What is the due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         String[] parts = input.substring(8).split("/by");
         if (parts.length < 2) {
-            throw new ListoException("OOPS!!! The due date cannot be empty.\nWhat is the due date for this task?\nEg. deadline Do Tutorial 1 /by Monday");
+            throw new ListoException("OOPS!!! The due date cannot be empty.\nWhat is the due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         String description = parts[0].trim();
         if (description.isEmpty()) {
-            throw new ListoException("OOPS!!! What is the name for this task?\nEg. deadline Do Tutorial 1 /by Monday");
+            throw new ListoException("OOPS!!! What is the name for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         String by = parts[1].trim();
-        Task t = new Deadline(description, by);
-        tasks.addTask(t);
-        ui.showTaskAdded(t, tasks.getSize());
+
+        try {
+            Task t = new Deadline(description, by);
+            tasks.addTask(t);
+            ui.showTaskAdded(t, tasks.getSize());
+        } catch (DateTimeParseException e) {
+            throw new ListoException("OOPS!!! Invalid date format. Please use DD/MM/YYYY HHmm (e.g., 04/02/2026 1800).");
+        }
     }
 
     /**
