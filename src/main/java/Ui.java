@@ -6,48 +6,94 @@ import java.util.Scanner;
 public class Ui {
     private Scanner scanner;
 
+    /**
+     * Initializes the UI and the Scanner for user input.
+     */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Reads a command line from the user.
+     *
+     * @return The string command entered by the user.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }
 
+    /**
+     * Prints the welcome greeting message.
+     */
     public void showWelcome() {
         System.out.println("Hello! I'm Listo :)\nHow can I help you?");
     }
 
+    /**
+     * Prints the goodbye message.
+     */
     public void showGoodbye() {
         System.out.println("Bye. Hope to see you again soon!");
     }
 
+    /**
+     * Prints an error message.
+     *
+     * @param message The error message to display.
+     */
     public void showError(String message) {
         System.out.println(message);
     }
 
+    /**
+     * Confirms that a task has been successfully added.
+     *
+     * @param t     The task that was added.
+     * @param count The new total number of tasks.
+     */
     public void showTaskAdded(Task t, int count) {
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + t.toString());
         System.out.println("Now you have " + count + " tasks in the list.");
     }
 
+    /**
+     * Confirms that a task has been deleted.
+     *
+     * @param t     The task that was removed.
+     * @param count The remaining number of tasks in the list.
+     */
     public void showTaskDeleted(Task t, int count) {
         System.out.println("Noted. I've removed this task:");
         System.out.println("  " + t.toString());
         System.out.println("Now you have " + count + " tasks in the list.");
     }
 
+    /**
+     * Confirms that a task has been marked as done.
+     *
+     * @param t The task that was marked.
+     */
     public void showTaskMarked(Task t) {
         System.out.println("Nice! I've marked this task as done:");
         System.out.println("  " + t.toString());
     }
 
+    /**
+     * Confirms that a task has been marked as not done.
+     *
+     * @param t The task that was unmarked.
+     */
     public void showTaskUnmarked(Task t) {
         System.out.println("OK, I've marked this task as not done yet:");
         System.out.println("  " + t.toString());
     }
 
+    /**
+     * Displays all tasks currently in the list.
+     *
+     * @param tasks The TaskList object containing the tasks.
+     */
     public void showList(TaskList tasks) {
         if (tasks.getSize() == 0) {
             System.out.println("Take a break! There's no tasks to be done for now.");
