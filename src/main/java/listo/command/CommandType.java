@@ -1,3 +1,5 @@
+package listo.command;
+
 /**
  * Represents the various commands that the user can execute.
  * Used to map user input strings to specific actions.

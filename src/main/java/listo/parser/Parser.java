@@ -1,3 +1,7 @@
+package listo.parser;
+
+import listo.ui.Ui;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +15,7 @@ public class Parser {
 
     /**
      * Parses the user input and executes the corresponding command.
-     * Maps the input string to a CommandType enum and executes the relevant logic.
+     * Maps the input string to a listo.command.CommandType enum and executes the relevant logic.
      *
      * @param input The full user input string.
      * @param tasks The current list of tasks.
@@ -24,31 +28,31 @@ public class Parser {
         CommandType command = getCommandType(commandWord);
 
         switch (command) {
-            case LIST:
+            case CommandType.LIST:
                 ui.showList(tasks);
                 break;
-            case MARK:
+            case CommandType.MARK:
                 handleMark(input, tasks, ui);
                 break;
-            case UNMARK:
+            case CommandType.UNMARK:
                 handleUnmark(input, tasks, ui);
                 break;
-            case DELETE:
+            case CommandType.DELETE:
                 handleDelete(input, tasks, ui);
                 break;
-            case TODO:
+            case CommandType.TODO:
                 addTodo(input, tasks, ui);
                 break;
-            case DEADLINE:
+            case CommandType.DEADLINE:
                 addDeadline(input, tasks, ui);
                 break;
-            case EVENT:
+            case CommandType.EVENT:
                 addEvent(input, tasks, ui);
                 break;
-            case FILTER:
+            case CommandType.FILTER:
                 handleFilter(input, tasks, ui);
                 break;
-            case BYE:
+            case CommandType.BYE:
                 // The 'bye' command is checked in the main loop to break execution,
                 break;
             default:
@@ -57,10 +61,10 @@ public class Parser {
     }
 
     /**
-     * Converts a string command word into a CommandType enum.
+     * Converts a string command word into a listo.command.CommandType enum.
      *
      * @param commandWord The first word of the user input.
-     * @return The corresponding CommandType, or UNKNOWN if not recognized.
+     * @return The corresponding listo.command.CommandType, or UNKNOWN if not recognized.
      */
     private static CommandType getCommandType(String commandWord) {
         try {
@@ -122,7 +126,7 @@ public class Parser {
 
     /**
      * Parses the "delete" command and removes the specified task.
-     * Checks if the task index exists and delegates the removal to TaskList and UI.
+     * Checks if the task index exists and delegates the removal to listo.task.TaskList and UI.
      *
      * @param input The full user input string (e.g., "delete 1").
      * @param tasks The current list of tasks.
@@ -148,7 +152,7 @@ public class Parser {
     }
 
     /**
-     * Parses the "todo" command and adds a new Todo task.
+     * Parses the "todo" command and adds a new listo.task.Todo task.
      *
      * @param input The full user input string (e.g., "todo read book").
      * @param tasks The current list of tasks.
@@ -166,7 +170,7 @@ public class Parser {
     }
 
     /**
-     * Parses the "deadline" command and adds a new Deadline task.
+     * Parses the "deadline" command and adds a new listo.task.Deadline task.
      *
      * @param input The full user input string.
      * @param tasks The current list of tasks.
@@ -200,7 +204,7 @@ public class Parser {
     }
 
     /**
-     * Parses the "event" command and adds a new Event task.
+     * Parses the "event" command and adds a new listo.task.Event task.
      *
      * @param input The full user input string.
      * @param tasks The current list of tasks.

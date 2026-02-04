@@ -1,5 +1,7 @@
+package listo.task;
+
 /**
- * Represents an Event task.
+ * Represents an listo.task.Event task.
  * A task that occurs over a specific time period.
  */
 public class Event extends Task {
@@ -8,7 +10,7 @@ public class Event extends Task {
     protected String to;
 
     /**
-     * Creates a new Event task.
+     * Creates a new listo.task.Event task.
      *
      * @param description The event description.
      * @param from        The start time of the event.
@@ -21,7 +23,7 @@ public class Event extends Task {
     }
 
     /**
-     * Returns the string representation of the Event task.
+     * Returns the string representation of the listo.task.Event task.
      * Prepends "[E]" and appends the time period.
      *
      * @return The formatted string.
@@ -32,10 +34,10 @@ public class Event extends Task {
     }
 
     /**
-     * Returns the string format of the Event task for saving to a file.
+     * Returns the string format of the listo.task.Event task for saving to a file.
      * Appends the type identifier "E", start time, and end time to the standard task format.
      *
-     * @return A string representation of the Event task for file storage.
+     * @return A string representation of the listo.task.Event task for file storage.
      */
     @Override
     public String toFileFormat() {

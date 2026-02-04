@@ -1,3 +1,5 @@
+package listo.storage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -66,7 +68,7 @@ public class Storage {
     /**
      * Saves the current list of tasks to the file.
      *
-     * @param tasks The TaskList containing tasks to save.
+     * @param tasks The listo.task.TaskList containing tasks to save.
      */
     public void save(TaskList tasks) {
         try {

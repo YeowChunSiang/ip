@@ -1,9 +1,11 @@
+package listo.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Represents a Deadline task.
+ * Represents a listo.task.Deadline task.
  * A task that needs to be done by a specific date and time.
  */
 public class Deadline extends Task {
@@ -11,7 +13,7 @@ public class Deadline extends Task {
     protected LocalDateTime by;
 
     /**
-     * Creates a new Deadline task.
+     * Creates a new listo.task.Deadline task.
      *
      * @param description The task description.
      * @param by          The deadline date/time (must be in d/M/yyyy HHmm format).
@@ -36,7 +38,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns the string format of the Deadline task for saving to a file.
+     * Returns the string format of the listo.task.Deadline task for saving to a file.
      * We save it in the same format (d/M/yyyy HHmm) so the constructor can load it back easily.
      */
     @Override
@@ -46,7 +48,7 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns the string representation of the Deadline task.
+     * Returns the string representation of the listo.task.Deadline task.
      * Displays the date in a nice format like "Dec 02 2019, 6:00 pm".
      */
     @Override
