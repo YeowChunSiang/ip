@@ -1,7 +1,9 @@
 package listo.ui;
 
-import java.util.Scanner;
+import listo.task.Task;
+import listo.task.TaskList;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Handles all user interaction, including reading input and printing messages.
