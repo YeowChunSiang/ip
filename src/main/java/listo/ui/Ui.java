@@ -1,3 +1,5 @@
+package listo.ui;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class Ui {
      * Prints the welcome greeting message.
      */
     public void showWelcome() {
-        System.out.println("Hello! I'm Listo :)\nHow can I help you?");
+        System.out.println("Hello! I'm listo.Listo :)\nHow can I help you?");
     }
 
     /**
@@ -93,7 +95,7 @@ public class Ui {
     /**
      * Displays all tasks currently in the list.
      *
-     * @param tasks The TaskList object containing the tasks.
+     * @param tasks The listo.task.TaskList object containing the tasks.
      */
     public void showList(TaskList tasks) {
         if (tasks.getSize() == 0) {

@@ -1,15 +1,17 @@
+package listo.task;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 
 /**
  * Manages the list of tasks.
- * Encapsulates an ArrayList of Task objects and provides methods to manipulate them.
+ * Encapsulates an ArrayList of listo.task.Task objects and provides methods to manipulate them.
  */
 public class TaskList {
     private ArrayList<Task> tasks;
 
     /**
-     * Initializes an empty TaskList.
+     * Initializes an empty listo.task.TaskList.
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
@@ -37,7 +39,7 @@ public class TaskList {
      * Retrieves a task from the list at a specific index.
      *
      * @param index The zero-based index of the task.
-     * @return The Task object.
+     * @return The listo.task.Task object.
      */
     public Task getTask(int index) {
 
@@ -91,10 +93,10 @@ public class TaskList {
     }
 
     /**
-     * Constructs a TaskList with an existing list of tasks.
+     * Constructs a listo.task.TaskList with an existing list of tasks.
      * Useful for initializing the list with data loaded from storage.
      *
-     * @param tasks An ArrayList of Task objects to populate the list.
+     * @param tasks An ArrayList of listo.task.Task objects to populate the list.
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;

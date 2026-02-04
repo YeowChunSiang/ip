@@ -1,8 +1,16 @@
+package listo;
+
+import listo.exception.ListoException;
+import listo.parser.Parser;
+import listo.storage.Storage;
+import listo.task.TaskList;
+import listo.ui.Ui;
+
 import java.io.IOException;
 
 /**
- * The Listo class is a simple chatbot that helps users manage tasks.
- * It initializes the core components (Ui, Storage, TaskList) and runs the main command loop.
+ * The listo.Listo class is a simple chatbot that helps users manage tasks.
+ * It initializes the core components (listo.ui.Ui, listo.storage.Storage, listo.task.TaskList) and runs the main command loop.
  */
 public class Listo {
 
@@ -11,8 +19,8 @@ public class Listo {
     private Ui ui;
 
     /**
-     * Constructs a new Listo application.
-     * Initializes the UI, Storage, and TaskList.
+     * Constructs a new listo.Listo application.
+     * Initializes the UI, listo.storage.Storage, and listo.task.TaskList.
      *
      * @param filePath The file path where tasks are stored.
      */
@@ -29,7 +37,7 @@ public class Listo {
 
     /**
      * Runs the main application loop.
-     * Continuously reads user commands and delegates execution to the Parser
+     * Continuously reads user commands and delegates execution to the listo.parser.Parser
      * until the "bye" command is received.
      */
     public void run() {

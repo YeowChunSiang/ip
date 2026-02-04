@@ -1,15 +1,17 @@
+package listo.task;
+
 import java.time.LocalDate;
 
 /**
  * Represents a generic task.
- * Serves as the base class for Todo, Deadline, and Event.
+ * Serves as the base class for listo.task.Todo, listo.task.Deadline, and listo.task.Event.
  */
 public class Task {
     protected String description;
     protected boolean isDone;
 
     /**
-     * Creates a new Task with a description.
+     * Creates a new listo.task.Task with a description.
      * The task is initially marked as not done.
      *
      * @param description The description of the task.
