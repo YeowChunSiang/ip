@@ -5,8 +5,9 @@ package listo.task;
  * A task that occurs over a specific time period.
  */
 public class Event extends Task {
-
+    /** The start time of the event. */
     protected String from;
+    /** The end time of the event. */
     protected String to;
 
     /**
