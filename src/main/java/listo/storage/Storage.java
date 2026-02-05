@@ -17,6 +17,11 @@ import java.util.Scanner;
 public class Storage {
     private String filePath;
 
+    /**
+     * Creates a new Storage instance.
+     *
+     * @param filePath The file path where tasks will be saved and loaded.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }

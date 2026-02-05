@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  * A task that needs to be done by a specific date and time.
  */
 public class Deadline extends Task {
-
+    /** The due date and time of the deadline. */
     protected LocalDateTime by;
 
     /**

@@ -7,7 +7,9 @@ import java.time.LocalDate;
  * Serves as the base class for listo.task.Todo, listo.task.Deadline, and listo.task.Event.
  */
 public class Task {
+    /** The description of the task. */
     protected String description;
+    /** The status of the task (true if done, false otherwise). */
     protected boolean isDone;
 
     /**

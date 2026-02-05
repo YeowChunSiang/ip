@@ -19,6 +19,12 @@ import java.time.format.DateTimeParseException;
  * Contains static methods to process specific command types.
  */
 public class Parser {
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
+    private Parser() {
+        // empty
+    }
 
     /**
      * Parses the user input and executes the corresponding command.
@@ -248,8 +254,12 @@ public class Parser {
     }
 
     /**
-     * Parses the "filter" command to find tasks on a specific date.
-     * * @param input The full user input string (e.g., "filter 2/12/2019").
+     * Filters and displays tasks that occur on a specific date.
+     *
+     * @param input The full user command string containing the date.
+     * @param tasks The current list of tasks.
+     * @param ui The UI instance to print the results.
+     * @throws ListoException If the date format is invalid.
      */
     public static void handleFilter(String input, TaskList tasks, Ui ui) throws ListoException {
         String[] parts = input.split(" ");
