@@ -10,7 +10,8 @@ import java.io.IOException;
 
 /**
  * The listo.Listo class is a simple chatbot that helps users manage tasks.
- * It initializes the core components (listo.ui.Ui, listo.storage.Storage, listo.task.TaskList) and runs the main command loop.
+ * It initializes the core components (listo.ui.Ui, listo.storage.Storage, listo.task.TaskList)
+ * and runs the main command loop.
  */
 public class Listo {
 

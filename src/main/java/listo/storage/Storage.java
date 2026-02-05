@@ -62,6 +62,9 @@ public class Storage {
                 case "E":
                     task = new Event(parts[2], parts[3], parts[4]);
                     break;
+                default:
+                    System.out.println("Skipping invalid task type: " + parts[0]);
+                    break;
             }
 
             if (task != null) {
