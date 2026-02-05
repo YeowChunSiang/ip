@@ -2,7 +2,6 @@ package listo.parser;
 
 import listo.command.CommandType;
 import listo.exception.ListoException;
-import listo.storage.Storage;
 import listo.task.Deadline;
 import listo.task.Event;
 import listo.task.Task;
@@ -192,18 +191,22 @@ public class Parser {
      */
     public static void addDeadline(String input, TaskList tasks, Ui ui) throws ListoException {
         if (input.trim().equals("deadline")) {
-            throw new ListoException("OOPS!!! What is the name and due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
+            throw new ListoException("OOPS!!! What is the name and due date for this task?\n" +
+                    "Eg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         if (!input.contains("/by")) {
-            throw new ListoException("OOPS!!! What is the due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
+            throw new ListoException("OOPS!!! What is the due date for this task?\n" +
+                    "Eg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         String[] parts = input.substring(8).split("/by");
         if (parts.length < 2) {
-            throw new ListoException("OOPS!!! The due date cannot be empty.\nWhat is the due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
+            throw new ListoException("OOPS!!! The due date cannot be empty.\n" +
+                    "What is the due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         String description = parts[0].trim();
         if (description.isEmpty()) {
-            throw new ListoException("OOPS!!! What is the name for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
+            throw new ListoException("OOPS!!! What is the name for this task?\n" +
+                    "Eg. deadline Do Tutorial 1 /by 04/02/2026 1800");
         }
         String by = parts[1].trim();
 
@@ -212,7 +215,8 @@ public class Parser {
             tasks.addTask(t);
             ui.showTaskAdded(t, tasks.getSize());
         } catch (DateTimeParseException e) {
-            throw new ListoException("OOPS!!! Invalid date format. Please use DD/MM/YYYY HHmm (e.g., 04/02/2026 1800).");
+            throw new ListoException("OOPS!!! Invalid date format. " +
+                    "Please use DD/MM/YYYY HHmm (e.g., 04/02/2026 1800).");
         }
     }
 
@@ -226,25 +230,31 @@ public class Parser {
      */
     public static void addEvent(String input, TaskList tasks, Ui ui) throws ListoException {
         if (input.trim().equals("event")) {
-            throw new ListoException("OOPS!!! What is the name, start and end date for this task?\nEg. event Do Tutorial 1 /from Monday /to Tuesday");
+            throw new ListoException("OOPS!!! What is the name, start and end date for this task?\n" +
+                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
         }
         if (!input.contains("/from") || !input.contains("/to")) {
-            throw new ListoException("OOPS!!! What is the start and/or end date for this task?\nEg. event Do Tutorial 1 /from Monday /to Tuesday");
+            throw new ListoException("OOPS!!! What is the start and/or end date for this task?\n" +
+                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
         }
         String[] parts = input.substring(5).split("/from");
         String description = parts[0].trim();
         if (description.isEmpty()) {
-            throw new ListoException("OOPS!!! What is the name of the event task?\nEg. event Do Tutorial 1 /from Monday /to Tuesday");
+            throw new ListoException("OOPS!!! What is the name of the event task?\n" +
+                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
         }
         if (parts.length < 2) {
-            throw new ListoException("OOPS!!! Please enter '/from' time before '/to' time.\nEg. event Do Tutorial 1 /from Monday /to Tuesday");
+            throw new ListoException("OOPS!!! Please enter '/from' time before '/to' time.\n" +
+                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
         }
         String[] timeParts = parts[1].split("/to");
         if (timeParts.length == 0) {
-            throw new ListoException("OOPS!!! An event must have a valid '/from' time.\nEg. event Do Tutorial 1 /from Monday /to Tuesday");
+            throw new ListoException("OOPS!!! An event must have a valid '/from' time.\n" +
+                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
         }
         if (timeParts.length < 2) {
-            throw new ListoException("OOPS!!! An event must have a valid '/to' time.\nEg. event Do Tutorial 1 /from Monday /to Tuesday");
+            throw new ListoException("OOPS!!! An event must have a valid '/to' time.\n" +
+                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
         }
         String from = timeParts[0].trim();
         String to = timeParts[1].trim();

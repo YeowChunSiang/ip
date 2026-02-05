@@ -1,6 +1,5 @@
 package listo.task;
 
-import listo.exception.ListoException;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
