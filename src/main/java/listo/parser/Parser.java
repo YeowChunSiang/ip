@@ -67,6 +67,9 @@ public class Parser {
             case CommandType.FIND:
                 handleFind(input, tasks, ui);
                 break;
+            case CommandType.CHEER:
+                ui.showCheer();
+                break;
             case CommandType.BYE:
                 // The 'bye' command is checked in the main loop to break execution,
                 break;

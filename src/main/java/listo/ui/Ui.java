@@ -4,18 +4,24 @@ import listo.task.Task;
 import listo.task.TaskList;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Handles all user interaction, including reading input and printing messages.
  */
 public class Ui {
     private Scanner scanner;
+    private ArrayList<String> cheers;
 
     /**
      * Initializes the UI and the Scanner for user input.
      */
     public Ui() {
         this.scanner = new Scanner(System.in);
+        loadCheers();
     }
 
     /**
@@ -144,6 +150,41 @@ public class Ui {
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println((i + 1) + "." + tasks.get(i).toString());
             }
+        }
+    }
+
+    /**
+     * Loads cheering messages from the data/cheer.txt file.
+     * If the file is not found, it loads default messages.
+     */
+    private void loadCheers() {
+        cheers = new ArrayList<>();
+        File file = new File("data/cheer.txt");
+        try {
+            Scanner fileScanner = new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine().trim();
+                if (!line.isEmpty()) {
+                    cheers.add(line);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            // Fallback defaults if file is missing
+            cheers.add("Good job!");
+            cheers.add("Well done!");
+        }
+    }
+
+    /**
+     * Prints a random encouraging quote to the user.
+     */
+    public void showCheer() {
+        if (cheers.isEmpty()) {
+            System.out.println("Go go go!"); // Fallback if list is empty
+        } else {
+            Random rand = new Random();
+            String randomCheer = cheers.get(rand.nextInt(cheers.size()));
+            System.out.println(randomCheer);
         }
     }
 }
