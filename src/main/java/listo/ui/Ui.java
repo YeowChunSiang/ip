@@ -111,6 +111,26 @@ public class Ui {
     }
 
     /**
+     * Prints the list of tasks found by a keyword search.
+     *
+     * @param tasks The list of tasks that match the search keyword.
+     */
+    public void showFoundTasks(TaskList tasks) {
+        if (tasks.getSize() == 0) {
+            System.out.println("No matching tasks found.");
+        } else {
+            System.out.println("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.getSize(); i++) {
+                try {
+                    System.out.println((i + 1) + "." + tasks.getTask(i));
+                } catch (Exception e) {
+                    System.out.println("Error printing task.");
+                }
+            }
+        }
+    }
+
+    /**
      * Displays the list of tasks found for a specific date.
      *
      * @param tasks The list of matching tasks.

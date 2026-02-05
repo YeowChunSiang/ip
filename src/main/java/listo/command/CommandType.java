@@ -21,6 +21,8 @@ public enum CommandType {
     DELETE,
     /** Command to filter tasks by date. */
     FILTER,
+    /** Command to find tasks by keyword. */
+    FIND,
     /** Command to exit the application. */
     BYE,
     /** Represents an unrecognized command. */
