@@ -64,6 +64,9 @@ public class Parser {
             case CommandType.FILTER:
                 handleFilter(input, tasks, ui);
                 break;
+            case CommandType.FIND:
+                handleFind(input, tasks, ui);
+                break;
             case CommandType.BYE:
                 // The 'bye' command is checked in the main loop to break execution,
                 break;
@@ -291,5 +294,23 @@ public class Parser {
         } catch (java.time.format.DateTimeParseException e) {
             throw new ListoException("OOPS!!! Invalid date format. Please use d/M/yyyy (e.g., 2/12/2019).");
         }
+    }
+
+    /**
+     * Handles the find command to search for tasks.
+     *
+     * @param input The full user command.
+     * @param tasks The task list.
+     * @param ui    The UI instance.
+     * @throws ListoException If the keyword is missing.
+     */
+    public static void handleFind(String input, TaskList tasks, Ui ui) throws ListoException {
+        String[] parts = input.split(" ", 2);
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            throw new ListoException("OOPS!!! The search keyword cannot be empty.\nEg. find book");
+        }
+        String keyword = parts[1].trim();
+        TaskList foundTasks = tasks.findTasks(keyword);
+        ui.showFoundTasks(foundTasks);
     }
 }
