@@ -23,6 +23,8 @@ public enum CommandType {
     FILTER,
     /** Command to find tasks by keyword. */
     FIND,
+    /** Command to display a random cheering message. */
+    CHEER,
     /** Command to exit the application. */
     BYE,
     /** Represents an unrecognized command. */
