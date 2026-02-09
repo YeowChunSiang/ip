@@ -1,0 +1,85 @@
+package listo;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
+
+/**
+ * A custom control using JavaFX.
+ * This control represents a dialog box consisting of an ImageView to represent the speaker's face
+ * and a label containing text from the speaker.
+ */
+public class DialogBox extends HBox {
+
+    /**
+     * Constructs a DialogBox with the specified text and image.
+     *
+     * @param l The text to display in the dialog box.
+     * @param iv The image to display representing the speaker.
+     */
+    public DialogBox(String l, Image iv, String hexColor) {
+        Label text = new Label(l);
+        ImageView displayPicture = new ImageView(iv);
+
+        text.setWrapText(true);
+        text.setStyle("-fx-background-color: " + hexColor + "; " +
+                "-fx-background-radius: 15; " +
+                "-fx-padding: 10; " +
+                "-fx-text-fill: black; " +
+                "-fx-font-family: 'Verdana';");
+
+        double imageSize = 50.0;
+        displayPicture.setFitWidth(imageSize);
+        displayPicture.setFitHeight(imageSize);
+        Circle clip = new Circle(imageSize / 2, imageSize / 2, imageSize / 2);
+        displayPicture.setClip(clip);
+
+        this.setAlignment(Pos.TOP_RIGHT);
+        this.setSpacing(10);
+        this.setPadding(new Insets(10));
+        this.getChildren().addAll(text, displayPicture);
+    }
+
+    /**
+     * Flips the dialog box such that the ImageView is on the left and text on the right.
+     */
+    private void flip() {
+        this.setAlignment(Pos.TOP_LEFT);
+        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
+        FXCollections.reverse(tmp);
+        this.getChildren().setAll(tmp);
+    }
+
+    /**
+     * Returns a DialogBox object representing the user's input.
+     * The image is positioned on the right side.
+     *
+     * @param l The user's text message.
+     * @param iv The user's profile image.
+     * @return A DialogBox containing the user's text and image.
+     */
+    public static DialogBox getUserDialog(String l, Image iv) {
+        return new DialogBox(l, iv, "#DCF8C6");
+    }
+
+    /**
+     * Returns a DialogBox object representing the bot's response.
+     * The image is positioned on the left side.
+     *
+     * @param l The bot's text response.
+     * @param iv The bot's profile image.
+     * @return A DialogBox containing the bot's text and image, flipped.
+     */
+    public static DialogBox getListoDialog(String l, Image iv) {
+        var db = new DialogBox(l, iv, "#FFFFFF");
+        db.flip();
+        return db;
+    }
+}

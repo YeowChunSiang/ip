@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
     id 'checkstyle'
 }
@@ -32,14 +33,29 @@ checkstyle {
     toolVersion = '10.2'
 }
 
+javafx {
+    version = '21.0.1'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.graphics']
+}
+
 application {
     mainClass.set("listo.Listo")
+    mainClass.set("listo.Launcher")
 }
 
 shadowJar {
     archiveBaseName.set("listo")
     archiveClassifier.set("")
     archiveVersion.set("0.1.0")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
 
 run{
