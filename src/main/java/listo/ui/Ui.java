@@ -3,47 +3,34 @@ package listo.ui;
 import listo.task.Task;
 import listo.task.TaskList;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  * Handles all user interaction, including reading input and printing messages.
  */
 public class Ui {
-    private Scanner scanner;
     private ArrayList<String> cheers;
 
     /**
-     * Initializes the UI and the Scanner for user input.
+     * Initializes the UI.
      */
     public Ui() {
-        this.scanner = new Scanner(System.in);
         loadCheers();
     }
 
     /**
-     * Reads a command line from the user.
+     * Prints any number of messages to the user.
+     * This method uses Java Varargs (String... messages).
      *
-     * @return The string command entered by the user.
+     * @param messages The messages to be printed, each on a new line.
      */
-    public String readCommand() {
-        return scanner.nextLine();
-    }
-
-    /**
-     * Prints the welcome greeting message.
-     */
-    public void showWelcome() {
-        System.out.println("Hello! I'm Listo :)\nHow can I help you?");
-    }
-
-    /**
-     * Prints the goodbye message.
-     */
-    public void showGoodbye() {
-        System.out.println("Bye Bye:) Hope to see you again soon!");
+    public void showToUser(String... messages) {
+        for (String m : messages) {
+            System.out.println(m);
+        }
     }
 
     /**
@@ -52,7 +39,7 @@ public class Ui {
      * @param message The error message to display.
      */
     public void showError(String message) {
-        System.out.println(message);
+        showToUser(message);
     }
 
     /**
@@ -62,9 +49,9 @@ public class Ui {
      * @param count The new total number of tasks.
      */
     public void showTaskAdded(Task t, int count) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + t.toString());
-        System.out.println("Now you have " + count + " tasks in the list.");
+        showToUser("Got it. I've added this task:",
+                "  " + t.toString(),
+                "Now you have " + count + " tasks in the list.");
     }
 
     /**
@@ -74,9 +61,9 @@ public class Ui {
      * @param count The remaining number of tasks in the list.
      */
     public void showTaskDeleted(Task t, int count) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + t.toString());
-        System.out.println("Now you have " + count + " tasks in the list.");
+        showToUser("Noted. I've removed this task:",
+                "  " + t.toString(),
+                "Now you have " + count + " tasks in the list.");
     }
 
     /**
@@ -85,8 +72,7 @@ public class Ui {
      * @param t The task that was marked.
      */
     public void showTaskMarked(Task t) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + t.toString());
+        showToUser("Nice! I've marked this task as done:", "  " + t.toString());
     }
 
     /**
@@ -95,44 +81,55 @@ public class Ui {
      * @param t The task that was unmarked.
      */
     public void showTaskUnmarked(Task t) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + t.toString());
+        showToUser("OK, I've marked this task as not done yet:", "  " + t.toString());
     }
 
     /**
      * Displays all tasks currently in the list.
+     * Refactored to use varargs.
      *
-     * @param tasks The listo.task.TaskList object containing the tasks.
+     * @param tasks The TaskList object containing the tasks.
      */
     public void showList(TaskList tasks) {
         if (tasks.getSize() == 0) {
-            System.out.println("Take a break! There's no tasks to be done for now.");
-        } else {
-            System.out.println("Things to do:");
-            for (int i = 0; i < tasks.getSize(); i++) {
-                System.out.println((i + 1) + "." + tasks.getTask(i).toString());
-            }
+            showToUser("Take a break! There's no tasks to be done for now.");
+            return;
         }
+
+        // Build the list of messages first
+        ArrayList<String> messages = new ArrayList<>();
+        messages.add("Things to do:");
+        for (int i = 0; i < tasks.getSize(); i++) {
+            messages.add((i + 1) + "." + tasks.getTask(i).toString());
+        }
+
+        // Convert ArrayList to Array (String...) and pass to showToUser
+        showToUser(messages.toArray(new String[0]));
     }
 
     /**
      * Prints the list of tasks found by a keyword search.
+     * Refactored to use varargs.
      *
      * @param tasks The list of tasks that match the search keyword.
      */
     public void showFoundTasks(TaskList tasks) {
         if (tasks.getSize() == 0) {
-            System.out.println("No matching tasks found.");
-        } else {
-            System.out.println("Here are the matching tasks in your list:");
-            for (int i = 0; i < tasks.getSize(); i++) {
-                try {
-                    System.out.println((i + 1) + "." + tasks.getTask(i));
-                } catch (Exception e) {
-                    System.out.println("Error printing task.");
-                }
+            showToUser("No matching tasks found.");
+            return;
+        }
+
+        ArrayList<String> messages = new ArrayList<>();
+        messages.add("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.getSize(); i++) {
+            try {
+                messages.add((i + 1) + "." + tasks.getTask(i));
+            } catch (Exception e) {
+                messages.add("Error printing task.");
             }
         }
+
+        showToUser(messages.toArray(new String[0]));
     }
 
     /**
@@ -143,18 +140,21 @@ public class Ui {
      */
     public void showTasksOnDate(ArrayList<Task> tasks, String dateInput) {
         if (tasks.isEmpty()) {
-            System.out.println("No tasks found on " + dateInput);
-        } else {
-            System.out.println("Here are the tasks on " + dateInput + ":");
-            for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + "." + tasks.get(i).toString());
-            }
+            showToUser("No tasks found on " + dateInput);
+            return;
         }
+
+        ArrayList<String> messages = new ArrayList<>();
+        messages.add("Here are the tasks on " + dateInput + ":");
+        for (int i = 0; i < tasks.size(); i++) {
+            messages.add((i + 1) + "." + tasks.get(i).toString());
+        }
+
+        showToUser(messages.toArray(new String[0]));
     }
 
     /**
      * Loads cheering messages from the data/cheer.txt file.
-     * If the file is not found, it loads default messages.
      */
     private void loadCheers() {
         cheers = new ArrayList<>();
@@ -168,7 +168,6 @@ public class Ui {
                 }
             }
         } catch (FileNotFoundException e) {
-            // Fallback defaults if file is missing
             cheers.add("Good job!");
             cheers.add("Well done!");
         }
@@ -179,11 +178,11 @@ public class Ui {
      */
     public void showCheer() {
         if (cheers.isEmpty()) {
-            System.out.println("Go go go!"); // Fallback if list is empty
+            showToUser("Keep up the good work!");
         } else {
             Random rand = new Random();
             String randomCheer = cheers.get(rand.nextInt(cheers.size()));
-            System.out.println(randomCheer);
+            showToUser(randomCheer);
         }
     }
 }
