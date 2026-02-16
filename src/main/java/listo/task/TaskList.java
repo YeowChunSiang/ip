@@ -42,7 +42,7 @@ public class TaskList {
      * @return The listo.task.Task object.
      */
     public Task getTask(int index) {
-
+        assert index >= 0 && index < tasks.size() : "Task index is out of bounds";
         return tasks.get(index);
     }
 
