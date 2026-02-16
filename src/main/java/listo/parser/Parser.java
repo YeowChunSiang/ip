@@ -18,6 +18,7 @@ import java.time.format.DateTimeParseException;
  * Contains static methods to process specific command types.
  */
 public class Parser {
+
     /**
      * Private constructor to prevent instantiation of this utility class.
      */
@@ -27,7 +28,7 @@ public class Parser {
 
     /**
      * Parses the user input and executes the corresponding command.
-     * Maps the input string to a listo.command.CommandType enum and executes the relevant logic.
+     * Separates the command word from the arguments and delegates to specific handler methods.
      *
      * @param input The full user input string.
      * @param tasks The current list of tasks.
@@ -35,43 +36,44 @@ public class Parser {
      * @throws ListoException If the command is invalid or execution fails.
      */
     public static void parseCommand(String input, TaskList tasks, Ui ui) throws ListoException {
-        String[] parts = input.split(" ");
+        String[] parts = input.trim().split(" ", 2);
         String commandWord = parts[0];
+        String arguments = parts.length > 1 ? parts[1] : "";
+
         CommandType command = getCommandType(commandWord);
 
         switch (command) {
-            case CommandType.LIST:
+            case LIST:
                 ui.showList(tasks);
                 break;
-            case CommandType.MARK:
-                handleMark(input, tasks, ui);
+            case MARK:
+                handleMark(arguments, tasks, ui);
                 break;
-            case CommandType.UNMARK:
-                handleUnmark(input, tasks, ui);
+            case UNMARK:
+                handleUnmark(arguments, tasks, ui);
                 break;
-            case CommandType.DELETE:
-                handleDelete(input, tasks, ui);
+            case DELETE:
+                handleDelete(arguments, tasks, ui);
                 break;
-            case CommandType.TODO:
-                addTodo(input, tasks, ui);
+            case TODO:
+                handleTodo(arguments, tasks, ui);
                 break;
-            case CommandType.DEADLINE:
-                addDeadline(input, tasks, ui);
+            case DEADLINE:
+                handleDeadline(arguments, tasks, ui);
                 break;
-            case CommandType.EVENT:
-                addEvent(input, tasks, ui);
+            case EVENT:
+                handleEvent(arguments, tasks, ui);
                 break;
-            case CommandType.FILTER:
-                handleFilter(input, tasks, ui);
+            case FILTER:
+                handleFilter(arguments, tasks, ui);
                 break;
-            case CommandType.FIND:
-                handleFind(input, tasks, ui);
+            case FIND:
+                handleFind(arguments, tasks, ui);
                 break;
-            case CommandType.CHEER:
+            case CHEER:
                 ui.showCheer();
                 break;
-            case CommandType.BYE:
-                // The 'bye' command is checked in the main loop to break execution,
+            case BYE:
                 break;
             default:
                 throw new ListoException("OOPS!!! Sorry, I don't know what you mean :(");
@@ -79,10 +81,10 @@ public class Parser {
     }
 
     /**
-     * Converts a string command word into a listo.command.CommandType enum.
+     * Converts a string command word into a CommandType enum.
      *
      * @param commandWord The first word of the user input.
-     * @return The corresponding listo.command.CommandType, or UNKNOWN if not recognized.
+     * @return The corresponding CommandType, or UNKNOWN if not recognized.
      */
     private static CommandType getCommandType(String commandWord) {
         try {
@@ -93,94 +95,85 @@ public class Parser {
     }
 
     /**
-     * Parses the "mark" command to mark a task as done.
+     * Handles the 'mark' command to set a task as completed.
      *
-     * @param input The full user input string (e.g., "mark 1").
-     * @param tasks The current list of tasks.
-     * @param ui    The UI instance to display messages.
-     * @throws ListoException If the input format is invalid or the index is out of bounds.
+     * @param args  The command arguments (expecting the task index).
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
+     * @throws ListoException If the index is invalid or missing.
      */
-    public static void handleMark(String input, TaskList tasks, Ui ui) throws ListoException {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            throw new ListoException("OOPS!!! Which task number do you want me to mark?\nEg. mark 1");
-        }
+    public static void handleMark(String args, TaskList tasks, Ui ui) throws ListoException {
         try {
-            int index = Integer.parseInt(parts[1]) - 1;
+            int index = Integer.parseInt(args.trim()) - 1;
             if (index < 0 || index >= tasks.getSize()) {
-                throw new ListoException("OOPS!!! I can't find that task number, can you try again?");
+                throw new ListoException("OOPS!!! I can't find that task number.");
             }
             tasks.markDone(index);
             ui.showTaskMarked(tasks.getTask(index));
         } catch (NumberFormatException e) {
-            throw new ListoException("OOPS!!! Please enter a valid number.\nEg. mark 1");
+            throw new ListoException("OOPS!!! Please enter a valid number." +
+                    "\nUsage: mark <task number>");
         }
     }
 
     /**
-     * Parses the "unmark" command to mark a task as not done.
+     * Handles the 'unmark' command to set a task as incomplete.
      *
-     * @param input The full user input string (e.g., "unmark 1").
-     * @param tasks The current list of tasks.
-     * @param ui    The UI instance to display messages.
-     * @throws ListoException If the input format is invalid or the index is out of bounds.
+     * @param args  The command arguments (expecting the task index).
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
+     * @throws ListoException If the index is invalid or missing.
      */
-    public static void handleUnmark(String input, TaskList tasks, Ui ui) throws ListoException {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            throw new ListoException("OOPS!!! Which task number do you want me to unmark?\nEg. unmark 1");
-        }
+    public static void handleUnmark(String args, TaskList tasks, Ui ui) throws ListoException {
         try {
-            int index = Integer.parseInt(parts[1]) - 1;
+            int index = Integer.parseInt(args.trim()) - 1;
             if (index < 0 || index >= tasks.getSize()) {
-                throw new ListoException("OOPS!!! I can't find that task number, can you try again?");
+                throw new ListoException("OOPS!!! I can't find that task number.");
             }
             tasks.markNotDone(index);
             ui.showTaskUnmarked(tasks.getTask(index));
         } catch (NumberFormatException e) {
-            throw new ListoException("OOPS!!! Please enter a valid number.\nEg. unmark 1");
+            throw new ListoException("OOPS!!! Please enter a valid number." +
+                    "\nUsage: unmark <task number>");
         }
     }
 
     /**
-     * Parses the "delete" command and removes the specified task.
-     * Checks if the task index exists and delegates the removal to listo.task.TaskList and UI.
+     * Handles the 'delete' command to remove a task from the list.
      *
-     * @param input The full user input string (e.g., "delete 1").
-     * @param tasks The current list of tasks.
-     * @param ui    The UI instance to display confirmation messages.
-     * @throws ListoException If the input format is invalid or the task number does not exist.
+     * @param args  The command arguments (expecting the task index).
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
+     * @throws ListoException If the index is invalid or missing.
      */
-    public static void handleDelete(String input, TaskList tasks, Ui ui) throws ListoException {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            throw new ListoException("OOPS!!! Which task number do you want me to delete?\nEg. delete 1");
-        }
+    public static void handleDelete(String args, TaskList tasks, Ui ui) throws ListoException {
         try {
-            int index = Integer.parseInt(parts[1]) - 1;
+            int index = Integer.parseInt(args.trim()) - 1;
             if (index < 0 || index >= tasks.getSize()) {
-                throw new ListoException("OOPS!!! I can't find that task number, can you try again?");
+                throw new ListoException("OOPS!!! I can't find that task number.");
             }
             Task t = tasks.getTask(index);
             tasks.deleteTask(index);
             ui.showTaskDeleted(t, tasks.getSize());
         } catch (NumberFormatException e) {
-            throw new ListoException("OOPS!!! Please enter a valid number.\nEg. delete 1");
+            throw new ListoException("OOPS!!! Please enter a valid number." +
+                    "\nUsage: delete <task number>");
         }
     }
 
     /**
-     * Parses the "todo" command and adds a new listo.task.Todo task.
+     * Handles the 'todo' command to add a new Todo task.
      *
-     * @param input The full user input string (e.g., "todo read book").
-     * @param tasks The current list of tasks.
-     * @param ui    The UI instance to display messages.
+     * @param args  The command arguments (task description).
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
      * @throws ListoException If the description is empty.
      */
-    public static void addTodo(String input, TaskList tasks, Ui ui) throws ListoException {
-        String description = input.substring(4).trim();
+    public static void handleTodo(String args, TaskList tasks, Ui ui) throws ListoException {
+        String description = args.trim();
         if (description.isEmpty()) {
-            throw new ListoException("OOPS!!! What is the name of the to do task?\nEg. todo Do Tutorial 1");
+            throw new ListoException("OOPS!!! You forgot the description of the todo task." +
+                    "\nUsage: todo <description>");
         }
         Task t = new Todo(description);
         tasks.addTask(t);
@@ -188,131 +181,109 @@ public class Parser {
     }
 
     /**
-     * Parses the "deadline" command and adds a new listo.task.Deadline task.
+     * Handles the 'deadline' command to add a new Deadline task.
      *
-     * @param input The full user input string.
-     * @param tasks The current list of tasks.
-     * @param ui    The UI instance to display messages.
-     * @throws ListoException If the format is incorrect (missing /by) or description is empty.
+     * @param args  The command arguments (description and /by date).
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
+     * @throws ListoException If the format is invalid or the date is missing.
      */
-    public static void addDeadline(String input, TaskList tasks, Ui ui) throws ListoException {
-        if (input.trim().equals("deadline")) {
-            throw new ListoException("OOPS!!! What is the name and due date for this task?\n" +
-                    "Eg. deadline Do Tutorial 1 /by 04/02/2026 1800");
+    public static void handleDeadline(String args, TaskList tasks, Ui ui) throws ListoException {
+        if (args.isEmpty() || !args.contains("/by")) {
+            throw new ListoException("OOPS!!! You forgot the description or due date of the deadline task." +
+                    "\nUsage: deadline <description> /by <date>");
         }
-        if (!input.contains("/by")) {
-            throw new ListoException("OOPS!!! What is the due date for this task?\n" +
-                    "Eg. deadline Do Tutorial 1 /by 04/02/2026 1800");
-        }
-        String[] parts = input.substring(8).split("/by");
-        if (parts.length < 2) {
-            throw new ListoException("OOPS!!! The due date cannot be empty.\n" +
-                    "What is the due date for this task?\nEg. deadline Do Tutorial 1 /by 04/02/2026 1800");
-        }
+        String[] parts = args.split("/by", 2);
         String description = parts[0].trim();
-        if (description.isEmpty()) {
-            throw new ListoException("OOPS!!! What is the name for this task?\n" +
-                    "Eg. deadline Do Tutorial 1 /by 04/02/2026 1800");
-        }
         String by = parts[1].trim();
+
+        if (description.isEmpty()) {
+            throw new ListoException("OOPS!!! The description cannot be empty.");
+        }
+        if (by.isEmpty()) {
+            throw new ListoException("OOPS!!! The due date cannot be empty.");
+        }
 
         try {
             Task t = new Deadline(description, by);
             tasks.addTask(t);
             ui.showTaskAdded(t, tasks.getSize());
         } catch (DateTimeParseException e) {
-            throw new ListoException("OOPS!!! Invalid date format. " +
-                    "Please use DD/MM/YYYY HHmm (e.g., 04/02/2026 1800).");
+            throw new ListoException("OOPS!!! Invalid date format. Use d/M/yyyy HHmm.");
         }
     }
 
     /**
-     * Parses the "event" command and adds a new listo.task.Event task.
+     * Handles the 'event' command to add a new Event task.
      *
-     * @param input The full user input string.
-     * @param tasks The current list of tasks.
-     * @param ui    The UI instance to display messages.
-     * @throws ListoException If the format is incorrect (missing /from or /to) or description is empty.
+     * @param args  The command arguments (description, /from start, /to end).
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
+     * @throws ListoException If the format is invalid or times are missing.
      */
-    public static void addEvent(String input, TaskList tasks, Ui ui) throws ListoException {
-        if (input.trim().equals("event")) {
-            throw new ListoException("OOPS!!! What is the name, start and end date for this task?\n" +
-                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
+    public static void handleEvent(String args, TaskList tasks, Ui ui) throws ListoException {
+        if (args.isEmpty() || !args.contains("/from") || !args.contains("/to")) {
+            throw new ListoException("OOPS!!! You forgot the description, start and end of the event task." +
+                    "\nUsage: event <desc> /from <start> /to <end>");
         }
-        if (!input.contains("/from") || !input.contains("/to")) {
-            throw new ListoException("OOPS!!! What is the start and/or end date for this task?\n" +
-                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
-        }
-        String[] parts = input.substring(5).split("/from");
+
+        String[] parts = args.split("/from", 2);
         String description = parts[0].trim();
-        if (description.isEmpty()) {
-            throw new ListoException("OOPS!!! What is the name of the event task?\n" +
-                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
+
+        if (parts.length < 2 || !parts[1].contains("/to")) {
+            throw new ListoException("OOPS!!! You forgot the end of the event task." +
+                    "\nUsage: event <desc> /from <start> /to <end>");
         }
-        if (parts.length < 2) {
-            throw new ListoException("OOPS!!! Please enter '/from' time before '/to' time.\n" +
-                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
-        }
-        String[] timeParts = parts[1].split("/to");
-        if (timeParts.length == 0) {
-            throw new ListoException("OOPS!!! An event must have a valid '/from' time.\n" +
-                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
-        }
-        if (timeParts.length < 2) {
-            throw new ListoException("OOPS!!! An event must have a valid '/to' time.\n" +
-                    "Eg. event Do Tutorial 1 /from Monday /to Tuesday");
-        }
+
+        String[] timeParts = parts[1].split("/to", 2);
         String from = timeParts[0].trim();
         String to = timeParts[1].trim();
+
+        if (description.isEmpty()) {
+            throw new ListoException("OOPS!!! The description cannot be empty.");
+        }
+
         Task t = new Event(description, from, to);
         tasks.addTask(t);
         ui.showTaskAdded(t, tasks.getSize());
     }
 
     /**
-     * Filters and displays tasks that occur on a specific date.
+     * Handles the 'filter' command to show tasks on a specific date.
      *
-     * @param input The full user command string containing the date.
-     * @param tasks The current list of tasks.
-     * @param ui The UI instance to print the results.
+     * @param args  The date string to filter by.
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
      * @throws ListoException If the date format is invalid.
      */
-    public static void handleFilter(String input, TaskList tasks, Ui ui) throws ListoException {
-        String[] parts = input.split(" ");
-        if (parts.length < 2) {
-            throw new ListoException("OOPS!!! Please specify a date to filter by.\nEg. filter 2/12/2019");
+    public static void handleFilter(String args, TaskList tasks, Ui ui) throws ListoException {
+        if (args.trim().isEmpty()) {
+            throw new ListoException("OOPS!!! Please specify a date." +
+                    "\nUsage: filter <date (d/M/yyyy)>");
         }
-
-        String dateString = parts[1];
         try {
-            // Parse the date string into a LocalDate object
-            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("d/M/yyyy"));
-
-            // Get matching tasks
+            LocalDate date = LocalDate.parse(args.trim(), DateTimeFormatter.ofPattern("d/M/yyyy"));
             ArrayList<Task> matchingTasks = tasks.getTasksOnDate(date);
-
-            // Show results
-            ui.showTasksOnDate(matchingTasks, dateString);
-
-        } catch (java.time.format.DateTimeParseException e) {
-            throw new ListoException("OOPS!!! Invalid date format. Please use d/M/yyyy (e.g., 2/12/2019).");
+            ui.showTasksOnDate(matchingTasks, args.trim());
+        } catch (DateTimeParseException e) {
+            throw new ListoException("OOPS!!! Invalid date format. Please use d/M/yyyy.");
         }
     }
 
     /**
-     * Handles the find command to search for tasks.
+     * Handles the 'find' command to search for tasks by keyword.
      *
-     * @param input The full user command.
-     * @param tasks The task list.
-     * @param ui    The UI instance.
-     * @throws ListoException If the keyword is missing.
+     * @param args  The keyword to search for.
+     * @param tasks The list of tasks.
+     * @param ui    The UI to display the result.
+     * @throws ListoException If the search keyword is empty.
      */
-    public static void handleFind(String input, TaskList tasks, Ui ui) throws ListoException {
-        String[] parts = input.split(" ", 2);
-        if (parts.length < 2 || parts[1].trim().isEmpty()) {
-            throw new ListoException("OOPS!!! The search keyword cannot be empty.\nEg. find book");
+    public static void handleFind(String args, TaskList tasks, Ui ui) throws ListoException {
+        String keyword = args.trim();
+        if (keyword.isEmpty()) {
+            throw new ListoException("OOPS!!! What do you want to search for?" +
+                    "\nUsage: find <task description>");
         }
-        String keyword = parts[1].trim();
         TaskList foundTasks = tasks.findTasks(keyword);
         ui.showFoundTasks(foundTasks);
     }

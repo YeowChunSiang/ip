@@ -10,19 +10,19 @@ import java.time.format.DateTimeFormatter;
  */
 public class Deadline extends Task {
     /** The due date and time of the deadline. */
-    protected LocalDateTime by;
+    protected LocalDateTime dueDateTime;
 
     /**
      * Creates a new listo.task.Deadline task.
      *
      * @param description The task description.
-     * @param by          The deadline date/time (must be in d/M/yyyy HHmm format).
+     * @param dueDateTime          The deadline date/time (must be in d/M/yyyy HHmm format).
      */
-    public Deadline(String description, String by) {
+    public Deadline(String description, String dueDateTime) {
         super(description);
         // Define the format: 2/12/2019 1800 -> d/M/yyyy HHmm
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
-        this.by = LocalDateTime.parse(by, formatter);
+        this.dueDateTime = LocalDateTime.parse(dueDateTime, formatter);
     }
 
     /**
@@ -33,8 +33,7 @@ public class Deadline extends Task {
      */
     @Override
     public boolean isOn(LocalDate date) {
-        // Check if the date part of the deadline matches the search date
-        return this.by.toLocalDate().equals(date);
+        return this.dueDateTime.toLocalDate().equals(date);
     }
 
     /**
@@ -44,7 +43,7 @@ public class Deadline extends Task {
     @Override
     public String toFileFormat() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
-        return "D | " + super.toFileFormat() + " | " + by.format(formatter);
+        return "D | " + super.toFileFormat() + " | " + dueDateTime.format(formatter);
     }
 
     /**
@@ -54,7 +53,7 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         // Output format: Dec 02 2019, 6:00 pm
-        return "[D]" + super.toString() + " (by: " +
-                by.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a")) + ")";
+        return "[D]" + super.toString() + " (dueDateTime: " +
+                dueDateTime.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a")) + ")";
     }
 }
