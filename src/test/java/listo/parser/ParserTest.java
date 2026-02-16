@@ -27,7 +27,8 @@ public class ParserTest {
             Parser.parseCommand("todo", new TaskList(), new Ui());
             fail();
         } catch (ListoException e) {
-            assertEquals("OOPS!!! You forgot the description of the todo task.\nUsage: todo <description>", e.getMessage());
+            assertEquals("OOPS!!! You forgot the description of the todo task." +
+                    "\nUsage: todo <description>", e.getMessage());
         }
     }
 
