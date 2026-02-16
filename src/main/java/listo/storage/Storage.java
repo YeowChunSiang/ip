@@ -84,6 +84,7 @@ public class Storage {
      * @param tasks The listo.task.TaskList containing tasks to save.
      */
     public void save(TaskList tasks) {
+        assert tasks != null : "TaskList to save cannot be null";
         try {
             FileWriter writer = new FileWriter(filePath);
             for (int i = 0; i < tasks.getSize(); i++) {
