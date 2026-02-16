@@ -9,7 +9,7 @@ public class DeadlineTest {
     public void testToString() {
         // Verifies that the Deadline parses the input date and prints it in the "MMM dd yyyy" format.
         Deadline d = new Deadline("return book", "2/12/2019 1800");
-        assertEquals("[D][ ] return book (by: Dec 02 2019, 6:00 PM)", d.toString());
+        assertEquals("[D][ ] return book (dueDateTime: Dec 02 2019, 6:00 PM)", d.toString());
     }
 
     @Test
