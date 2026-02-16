@@ -1,20 +1,31 @@
 package listo.task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 /**
  * Manages the list of tasks.
- * Encapsulates an ArrayList of listo.task.Task objects and provides methods to manipulate them.
+ * Encapsulates an ArrayList of Task objects and provides methods to manipulate them.
  */
 public class TaskList {
     private ArrayList<Task> tasks;
 
     /**
-     * Initializes an empty listo.task.TaskList.
+     * Initializes an empty TaskList.
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
+    }
+
+    /**
+     * Constructs a TaskList with an existing list of tasks.
+     * Useful for initializing the list with data loaded from storage.
+     *
+     * @param tasks An ArrayList of Task objects to populate the list.
+     */
+    public TaskList(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 
     /**
@@ -39,10 +50,9 @@ public class TaskList {
      * Retrieves a task from the list at a specific index.
      *
      * @param index The zero-based index of the task.
-     * @return The listo.task.Task object.
+     * @return The Task object.
      */
     public Task getTask(int index) {
-
         return tasks.get(index);
     }
 
@@ -52,7 +62,6 @@ public class TaskList {
      * @return The number of tasks.
      */
     public int getSize() {
-
         return tasks.size();
     }
 
@@ -62,7 +71,6 @@ public class TaskList {
      * @param index The zero-based index of the task.
      */
     public void markDone(int index) {
-
         tasks.get(index).markAsDone();
     }
 
@@ -72,50 +80,34 @@ public class TaskList {
      * @param index The zero-based index of the task.
      */
     public void markNotDone(int index) {
-
         tasks.get(index).markAsNotDone();
     }
 
     /**
-     * Finds all tasks that occur on a specific date.
+     * Finds all tasks that occur on a specific date using Java Streams.
      *
      * @param date The date to search for.
      * @return An ArrayList of matching tasks.
      */
     public ArrayList<Task> getTasksOnDate(LocalDate date) {
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task t : tasks) {
-            if (t.isOn(date)) {
-                matchingTasks.add(t);
-            }
-        }
-        return matchingTasks;
+        // Refactored to use Stream API
+        return tasks.stream()
+                .filter(t -> t.isOn(date))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
-     * Finds tasks that contain the given keyword.
+     * Finds tasks that contain the given keyword using Java Streams.
      *
      * @param keyword The keyword to search for.
      * @return A new TaskList containing the matching tasks.
      */
     public TaskList findTasks(String keyword) {
-        TaskList matchingTasks = new TaskList();
-        for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            if (task.toString().contains(keyword)) {
-                matchingTasks.addTask(task);
-            }
-        }
-        return matchingTasks;
-    }
+        // Refactored to use Stream API
+        ArrayList<Task> matchingTasks = tasks.stream()
+                .filter(t -> t.toString().contains(keyword))
+                .collect(Collectors.toCollection(ArrayList::new));
 
-    /**
-     * Constructs a listo.task.TaskList with an existing list of tasks.
-     * Useful for initializing the list with data loaded from storage.
-     *
-     * @param tasks An ArrayList of listo.task.Task objects to populate the list.
-     */
-    public TaskList(ArrayList<Task> tasks) {
-        this.tasks = tasks;
+        return new TaskList(matchingTasks);
     }
 }
