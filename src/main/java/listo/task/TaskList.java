@@ -53,6 +53,7 @@ public class TaskList {
      * @return The Task object.
      */
     public Task getTask(int index) {
+        assert index >= 0 && index < tasks.size() : "Task index is out of bounds";
         return tasks.get(index);
     }
 
@@ -90,7 +91,6 @@ public class TaskList {
      * @return An ArrayList of matching tasks.
      */
     public ArrayList<Task> getTasksOnDate(LocalDate date) {
-        // Refactored to use Stream API
         return tasks.stream()
                 .filter(t -> t.isOn(date))
                 .collect(Collectors.toCollection(ArrayList::new));
@@ -103,7 +103,6 @@ public class TaskList {
      * @return A new TaskList containing the matching tasks.
      */
     public TaskList findTasks(String keyword) {
-        // Refactored to use Stream API
         ArrayList<Task> matchingTasks = tasks.stream()
                 .filter(t -> t.toString().contains(keyword))
                 .collect(Collectors.toCollection(ArrayList::new));
