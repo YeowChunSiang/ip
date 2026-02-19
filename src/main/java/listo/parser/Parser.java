@@ -176,6 +176,10 @@ public class Parser {
                     "\nUsage: todo <description>");
         }
         Task t = new Todo(description);
+        if (tasks.containsDuplicate(t)) {
+            throw new ListoException("OOPS!!! This todo task already exists in your list.");
+        }
+
         tasks.addTask(t);
         ui.showTaskAdded(t, tasks.getSize());
     }
@@ -206,6 +210,11 @@ public class Parser {
 
         try {
             Task t = new Deadline(description, by);
+
+            if (tasks.containsDuplicate(t)) {
+                throw new ListoException("OOPS!!! This deadline task already exists in your list.");
+            }
+
             tasks.addTask(t);
             ui.showTaskAdded(t, tasks.getSize());
         } catch (DateTimeParseException e) {
@@ -244,6 +253,11 @@ public class Parser {
         }
 
         Task t = new Event(description, from, to);
+
+        if (tasks.containsDuplicate(t)) {
+            throw new ListoException("OOPS!!! This event task already exists in your list.");
+        }
+
         tasks.addTask(t);
         ui.showTaskAdded(t, tasks.getSize());
     }
