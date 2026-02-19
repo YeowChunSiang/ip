@@ -109,4 +109,15 @@ public class TaskList {
 
         return new TaskList(matchingTasks);
     }
+
+    /**
+     * Checks if a duplicate task already exists in the list based on its string representation.
+     *
+     * @param newTask The task to check against existing tasks.
+     * @return true if a duplicate is found, false otherwise.
+     */
+    public boolean containsDuplicate(Task newTask) {
+        return tasks.stream()
+                .anyMatch(t -> t.toString().equals(newTask.toString()));
+    }
 }
