@@ -128,7 +128,7 @@ public class Listo extends Application {
 
         dialogContainer.getChildren().add(
                 DialogBox.getListoDialog("Hello! I'm Listo, your Personal Assistant Chatbot :) " +
-                        "How can I help you?", listo)
+                        "What's the plan for today? Let's get things done!", listo)
         );
     }
 
