@@ -30,10 +30,11 @@ public class DialogBox extends HBox {
 
         text.setWrapText(true);
         text.setStyle("-fx-background-color: " + hexColor + "; " +
-                "-fx-background-radius: 15; " +
-                "-fx-padding: 10; " +
-                "-fx-text-fill: black; " +
-                "-fx-font-family: 'Verdana';");
+                "-fx-background-radius: 20; " +
+                "-fx-padding: 12; " +
+                "-fx-text-fill: #424242; " +
+                "-fx-font-family: 'Verdana'; " +
+                "-fx-font-size: 13px;");
 
         double imageSize = 50.0;
         displayPicture.setFitWidth(imageSize);
@@ -66,7 +67,7 @@ public class DialogBox extends HBox {
      * @return A DialogBox containing the user's text and image.
      */
     public static DialogBox getUserDialog(String l, Image iv) {
-        return new DialogBox(l, iv, "#DCF8C6");
+        return new DialogBox(l, iv, "#E8F5E9");
     }
 
     /**
@@ -78,7 +79,7 @@ public class DialogBox extends HBox {
      * @return A DialogBox containing the bot's text and image, flipped.
      */
     public static DialogBox getListoDialog(String l, Image iv) {
-        var db = new DialogBox(l, iv, "#FFFFFF");
+        var db = new DialogBox(l, iv, "#E1F5FE");
         db.flip();
         return db;
     }
@@ -92,8 +93,7 @@ public class DialogBox extends HBox {
      * @return A DialogBox containing the error text and image.
      */
     public static DialogBox getErrorDialog(String l, Image iv) {
-        // #FFC1CC is a light pink/red color for errors
-        var db = new DialogBox(l, iv, "#FFC1CC");
+        var db = new DialogBox(l, iv, "#FFCDD2");
         db.flip();
         return db;
     }
