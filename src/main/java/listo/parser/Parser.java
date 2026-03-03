@@ -37,7 +37,7 @@ public class Parser {
      */
     public static void parseCommand(String input, TaskList tasks, Ui ui) throws ListoException {
         if (input.trim().isEmpty()) {
-            throw new ListoException("Hello? 🎤 I can't hear you! Please type a command.");
+            throw new ListoException("OOPS!!! Hello? 🎤 I can't hear you! Please type a command.");
         }
 
         String[] parts = input.trim().split(" ", 2);
@@ -262,7 +262,8 @@ public class Parser {
             LocalDate endDate = LocalDate.parse(to, formatter);
 
             if (endDate.isBefore(startDate)) {
-                throw new ListoException("Oh no! 🙈 The end date cannot be before the start date. Time travel isn't allowed yet! ⏳");
+                throw new ListoException("OOPS!!! 🙈 The end date cannot be before the start date. " +
+                        "Time travel isn't allowed yet! ⏳");
             }
         } catch (DateTimeParseException e) {
         }
