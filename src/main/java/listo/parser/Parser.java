@@ -36,6 +36,10 @@ public class Parser {
      * @throws ListoException If the command is invalid or execution fails.
      */
     public static void parseCommand(String input, TaskList tasks, Ui ui) throws ListoException {
+        if (input.trim().isEmpty()) {
+            throw new ListoException("Hello? 🎤 I can't hear you! Please type a command.");
+        }
+
         String[] parts = input.trim().split(" ", 2);
         String commandWord = parts[0];
         String arguments = parts.length > 1 ? parts[1] : "";
@@ -250,6 +254,17 @@ public class Parser {
 
         if (description.isEmpty()) {
             throw new ListoException("OOPS!!! The description cannot be empty.");
+        }
+
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+            LocalDate startDate = LocalDate.parse(from, formatter);
+            LocalDate endDate = LocalDate.parse(to, formatter);
+
+            if (endDate.isBefore(startDate)) {
+                throw new ListoException("Oh no! 🙈 The end date cannot be before the start date. Time travel isn't allowed yet! ⏳");
+            }
+        } catch (DateTimeParseException e) {
         }
 
         Task t = new Event(description, from, to);

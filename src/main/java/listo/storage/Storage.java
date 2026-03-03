@@ -51,27 +51,31 @@ public class Storage {
             String line = scanner.nextLine();
             String[] parts = line.split(" \\| ");
 
-            Task task = null;
-            switch (parts[0]) {
-                case "T":
-                    task = new Todo(parts[2]);
-                    break;
-                case "D":
-                    task = new Deadline(parts[2], parts[3]);
-                    break;
-                case "E":
-                    task = new Event(parts[2], parts[3], parts[4]);
-                    break;
-                default:
-                    System.out.println("Skipping invalid task type: " + parts[0]);
-                    break;
-            }
-
-            if (task != null) {
-                if (parts[1].equals("1")) {
-                    task.markAsDone();
+            try {
+                Task task = null;
+                switch (parts[0]) {
+                    case "T":
+                        task = new Todo(parts[2]);
+                        break;
+                    case "D":
+                        task = new Deadline(parts[2], parts[3]);
+                        break;
+                    case "E":
+                        task = new Event(parts[2], parts[3], parts[4]);
+                        break;
+                    default:
+                        System.out.println("Skipping invalid task type: " + parts[0]);
+                        break;
                 }
-                tasks.add(task);
+
+                if (task != null) {
+                    if (parts[1].equals("1")) {
+                        task.markAsDone();
+                    }
+                    tasks.add(task);
+                }
+            } catch (Exception e) {
+                System.out.println("Warning: Skipping corrupted line in save file: " + line);
             }
         }
         scanner.close();

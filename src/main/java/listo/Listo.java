@@ -182,7 +182,7 @@ public class Listo extends Application {
             System.setOut(originalOut);
         }
 
-        return outContent.toString();
+        return outContent.toString().trim();
     }
 
     /**
