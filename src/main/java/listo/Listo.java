@@ -81,11 +81,6 @@ public class Listo extends Application {
         dialogContainer = new VBox();
         scrollPane.setContent(dialogContainer);
 
-        dialogContainer.setStyle("-fx-background-color: #ECE5DD;");
-        dialogContainer.setSpacing(10);
-
-        scrollPane.setStyle("-fx-background: #ECE5DD; -fx-background-color: #ECE5DD;");
-
         userInput = new TextField();
         Button sendButton = new Button("Send");
 
@@ -95,35 +90,37 @@ public class Listo extends Application {
         Scene scene = new Scene(mainLayout);
 
         stage.setTitle("Listo");
-        stage.setResizable(false);
+        stage.setResizable(true);
         stage.setMinHeight(600.0);
         stage.setMinWidth(400.0);
 
-        mainLayout.setPrefSize(400.0, 600.0);
+        dialogContainer.setStyle("-fx-background-color: #ECE5DD;");
+        dialogContainer.setSpacing(10);
+        dialogContainer.prefWidthProperty().bind(scrollPane.widthProperty());
 
-        scrollPane.setPrefSize(385, 535);
+        scrollPane.setStyle("-fx-background: #ECE5DD; -fx-background-color: #ECE5DD;");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setVvalue(1.0);
         scrollPane.setFitToWidth(true);
 
-        dialogContainer.setPrefHeight(Region.USE_COMPUTED_SIZE);
-        userInput.setPrefWidth(325.0);
+        // ScrollPane takes up everything except the bottom 50px
+        AnchorPane.setTopAnchor(scrollPane, 0.0);
+        AnchorPane.setLeftAnchor(scrollPane, 0.0);
+        AnchorPane.setRightAnchor(scrollPane, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 50.0);
+
+        // Send Button is stuck to the bottom right
+        AnchorPane.setBottomAnchor(sendButton, 10.0);
+        AnchorPane.setRightAnchor(sendButton, 10.0);
         sendButton.setPrefWidth(55.0);
 
-        AnchorPane.setTopAnchor(scrollPane, 1.0);
-        AnchorPane.setBottomAnchor(sendButton, 1.0);
-        AnchorPane.setRightAnchor(sendButton, 1.0);
-        AnchorPane.setLeftAnchor(userInput , 1.0);
-        AnchorPane.setBottomAnchor(userInput, 1.0);
+        // User Input is stuck to bottom left, and stretches to meet the button
+        AnchorPane.setLeftAnchor(userInput, 10.0);
+        AnchorPane.setBottomAnchor(userInput, 10.0);
+        AnchorPane.setRightAnchor(userInput, 75.0);
 
-        sendButton.setOnMouseClicked((event) -> {
-            handleUserInput();
-        });
-
-        userInput.setOnAction((event) -> {
-            handleUserInput();
-        });
+        sendButton.setOnMouseClicked((event) -> handleUserInput());
+        userInput.setOnAction((event) -> handleUserInput());
 
         dialogContainer.heightProperty().addListener((observable) -> scrollPane.setVvalue(1.0));
 
@@ -144,10 +141,13 @@ public class Listo extends Application {
         String input = userInput.getText();
         String response = getResponse(input);
 
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, user),
-                DialogBox.getListoDialog(response, listo)
-        );
+        dialogContainer.getChildren().add(DialogBox.getUserDialog(input, user));
+
+        if (response.startsWith("OOPS!!!")) {
+            dialogContainer.getChildren().add(DialogBox.getErrorDialog(response, listo));
+        } else {
+            dialogContainer.getChildren().add(DialogBox.getListoDialog(response, listo));
+        }
 
         if (input.equals("bye")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.0));

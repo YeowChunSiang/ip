@@ -82,4 +82,19 @@ public class DialogBox extends HBox {
         db.flip();
         return db;
     }
+
+    /**
+     * Returns a DialogBox object representing an error message.
+     * The image is positioned on the left side (like the bot), but with a red style.
+     *
+     * @param l The error text.
+     * @param iv The bot's profile image.
+     * @return A DialogBox containing the error text and image.
+     */
+    public static DialogBox getErrorDialog(String l, Image iv) {
+        // #FFC1CC is a light pink/red color for errors
+        var db = new DialogBox(l, iv, "#FFC1CC");
+        db.flip();
+        return db;
+    }
 }
