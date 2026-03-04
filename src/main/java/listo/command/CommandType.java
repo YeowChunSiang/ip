@@ -25,6 +25,8 @@ public enum CommandType {
     FIND,
     /** Command to display a random cheering message. */
     CHEER,
+    /** Command to list all available commands. */
+    HELP,
     /** Command to exit the application. */
     BYE,
     /** Represents an unrecognized command. */
