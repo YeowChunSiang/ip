@@ -6,6 +6,7 @@ import listo.exception.ListoException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ParserTest {
 
@@ -62,5 +63,41 @@ public class ParserTest {
         } catch (Exception e) {
             org.junit.jupiter.api.Assertions.fail("Bye command should be safe");
         }
+    }
+
+    @Test
+    public void parseCommand_duplicateTask_exceptionThrown() {
+        TaskList tasks = new TaskList();
+        Ui ui = new Ui();
+        try {
+            // Add the first task
+            Parser.parseCommand("todo read book", tasks, ui);
+
+            // Try to add the EXACT same task again
+            Exception exception = assertThrows(ListoException.class, () -> {
+                Parser.parseCommand("todo read book", tasks, ui);
+            });
+
+            // Verify the error message matches what you wrote in A-MoreErrorHandling
+            assertEquals("OOPS!!! This todo task already exists in your list.", exception.getMessage());
+
+        } catch (ListoException e) {
+            fail("Setup failed: " + e.getMessage());
+        }
+    }
+
+    @Test
+    public void parseCommand_invalidEventDateLogic_exceptionThrown() {
+        TaskList tasks = new TaskList();
+        Ui ui = new Ui();
+
+        String command = "event TimeTravel /from 1/1/2025 /to 1/1/2020";
+
+        Exception exception = assertThrows(ListoException.class, () -> {
+            Parser.parseCommand(command, tasks, ui);
+        });
+
+        assertEquals("OOPS!!! 🙈 The end date cannot be before the start date. " +
+                "Time travel isn't allowed yet! ⏳", exception.getMessage());
     }
 }
