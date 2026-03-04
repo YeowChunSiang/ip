@@ -185,4 +185,25 @@ public class Ui {
             showToUser(randomCheer);
         }
     }
+
+    /**
+     * Displays the help message with a list of all available commands.
+     */
+    public void showHelp() {
+        showToUser(
+                "Here are the commands I understand:",
+                "1. todo <description> - Adds a todo task.",
+                "2. deadline <description> /by <date> - Adds a deadline.",
+                "3. event <description> /from <start> /to <end> - Adds an event.",
+                "4. list - Shows all tasks.",
+                "5. mark <index> - Marks a task as done.",
+                "6. unmark <index> - Marks a task as not done.",
+                "7. delete <index> - Removes a task.",
+                "8. filter <date> - Finds deadlines/events on a specific date.",
+                "9. find <keyword> - Searches for tasks by keyword.",
+                "10. cheer - Get a motivational message from me! \uD83C\uDF89",
+                "11. help - Shows this list of commands.",
+                "12. bye - Exits the application."
+        );
+    }
 }

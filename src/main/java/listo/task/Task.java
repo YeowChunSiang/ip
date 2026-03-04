@@ -24,6 +24,14 @@ public class Task {
     }
 
     /**
+     * Checks if the task occurs on the specified date.
+     * Default implementation returns false (for Todos).
+     */
+    public boolean isOccurringOn(LocalDate date) {
+        return false;
+    }
+
+    /**
      * Returns the status icon for the task.
      *
      * @return "X" if done, " " (space) if not done.

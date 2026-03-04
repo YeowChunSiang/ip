@@ -32,7 +32,7 @@ public class Deadline extends Task {
      * @return true if the deadline date matches the given date.
      */
     @Override
-    public boolean isOn(LocalDate date) {
+    public boolean isOccurringOn(LocalDate date) {
         return this.dueDateTime.toLocalDate().equals(date);
     }
 

@@ -128,7 +128,8 @@ public class Listo extends Application {
 
         dialogContainer.getChildren().add(
                 DialogBox.getListoDialog("Hello! I'm Listo, your Personal Assistant Chatbot :) " +
-                        "What's the plan for today? Let's get things done!", listo)
+                        "What's the plan for today? Let's get things done!\n" +
+                        "\nType \"help\" to see the list of commands I understand :)", listo)
         );
     }
 
@@ -148,7 +149,7 @@ public class Listo extends Application {
             dialogContainer.getChildren().add(DialogBox.getListoDialog(response, listo));
         }
 
-        if (input.equals("bye")) {
+        if (input.trim().equalsIgnoreCase("bye")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.0));
             delay.setOnFinished(event -> Platform.exit());
             delay.play();
@@ -165,7 +166,7 @@ public class Listo extends Application {
      * @return The response string to be displayed by the bot.
      */
     private String getResponse(String input) {
-        if (input.equals("bye")) {
+        if (input.trim().equalsIgnoreCase("bye")) {
             return "Goodbye! Hope to see you again soon :)";
         }
 

@@ -77,6 +77,9 @@ public class Parser {
             case CHEER:
                 ui.showCheer();
                 break;
+            case HELP:
+                ui.showHelp();
+                break;
             case BYE:
                 break;
             default:
@@ -293,7 +296,15 @@ public class Parser {
         }
         try {
             LocalDate date = LocalDate.parse(args.trim(), DateTimeFormatter.ofPattern("d/M/yyyy"));
-            ArrayList<Task> matchingTasks = tasks.getTasksOnDate(date);
+
+            ArrayList<Task> matchingTasks = new ArrayList<>();
+            for (int i = 0; i < tasks.getSize(); i++) {
+                Task t = tasks.getTask(i);
+                if (t.isOccurringOn(date)) {
+                    matchingTasks.add(t);
+                }
+            }
+
             ui.showTasksOnDate(matchingTasks, args.trim());
         } catch (DateTimeParseException e) {
             throw new ListoException("OOPS!!! Invalid date format. Please use d/M/yyyy.");

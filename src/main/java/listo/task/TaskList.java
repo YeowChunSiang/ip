@@ -103,8 +103,10 @@ public class TaskList {
      * @return A new TaskList containing the matching tasks.
      */
     public TaskList findTasks(String keyword) {
+        String lowerKeyword = keyword.toLowerCase(); // Convert keyword once for efficiency
+
         ArrayList<Task> matchingTasks = tasks.stream()
-                .filter(t -> t.toString().contains(keyword))
+                .filter(t -> t.toString().toLowerCase().contains(lowerKeyword))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return new TaskList(matchingTasks);
