@@ -2,13 +2,17 @@
 
 Listo is a personal assistant chatbot designed to help you manage your tasks efficiently. It supports tracking Todos, Deadlines, and Events, all wrapped in a friendly and interactive GUI.
 
+📖 **[Click here to read the full Listo User Guide](docs/UserGuide.md)**
+
 ## Features
 
 * **GUI Interface:** A clean, chat-like interface built with JavaFX.
 * **Task Management:** Add, delete, and mark tasks as done.
+* **Search & Filter:** Find tasks by keyword (case-insensitive) or filter deadlines/events by specific dates.
 * **Data Persistence:** Automatically saves your tasks to a local file.
 * **Duplicate Detection:** Prevents adding the same task twice.
 * **Smart Parsing:** Handles flexible date formats and validates inputs.
+* **Motivation:** Type `cheer` to get a quick motivational boost from bundled custom quotes!
 
 ## Setting up in IntelliJ
 
