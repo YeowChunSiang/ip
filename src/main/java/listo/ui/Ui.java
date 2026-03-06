@@ -158,16 +158,19 @@ public class Ui {
      */
     private void loadCheers() {
         cheers = new ArrayList<>();
-        File file = new File("data/cheer.txt");
         try {
-            Scanner fileScanner = new Scanner(file);
-            while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine().trim();
-                if (!line.isEmpty()) {
-                    cheers.add(line);
+            java.io.InputStream inputStream = getClass().getResourceAsStream("/cheer.txt");
+
+            if (inputStream != null) {
+                Scanner fileScanner = new Scanner(inputStream);
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine().trim();
+                    if (!line.isEmpty()) {
+                        cheers.add(line);
+                    }
                 }
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             cheers.add("Good job!");
             cheers.add("Well done!");
         }
