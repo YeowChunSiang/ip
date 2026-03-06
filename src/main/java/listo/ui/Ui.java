@@ -3,8 +3,6 @@ package listo.ui;
 import listo.task.Task;
 import listo.task.TaskList;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -96,14 +94,12 @@ public class Ui {
             return;
         }
 
-        // Build the list of messages first
         ArrayList<String> messages = new ArrayList<>();
         messages.add("Things to do:");
         for (int i = 0; i < tasks.getSize(); i++) {
             messages.add((i + 1) + "." + tasks.getTask(i).toString());
         }
 
-        // Convert ArrayList to Array (String...) and pass to showToUser
         showToUser(messages.toArray(new String[0]));
     }
 
